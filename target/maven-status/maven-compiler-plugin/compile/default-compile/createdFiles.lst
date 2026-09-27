@@ -1,0 +1,11 @@
+com\ebook\management\bookservice\exception\ErrorResponse.class
+com\ebook\management\bookservice\controller\BookController.class
+com\ebook\management\bookservice\security\JwtAuthenticationFilter.class
+com\ebook\management\bookservice\security\JwtTokenProvider.class
+com\ebook\management\bookservice\dto\BookDto.class
+com\ebook\management\bookservice\security\SecurityConfig.class
+com\ebook\management\bookservice\domain\Book.class
+com\ebook\management\bookservice\BookServiceApplication.class
+com\ebook\management\bookservice\service\BookService.class
+com\ebook\management\bookservice\mapper\BookMapper.class
+com\ebook\management\bookservice\repository\BookRepository.class
