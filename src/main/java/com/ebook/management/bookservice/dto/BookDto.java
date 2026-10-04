@@ -3,9 +3,15 @@ package com.ebook.management.bookservice.dto;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
-
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class BookDto {
   private Long id;
 

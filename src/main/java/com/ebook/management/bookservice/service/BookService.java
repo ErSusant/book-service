@@ -36,6 +36,17 @@ public class BookService {
         .orElseThrow(() -> new ResourceNotFoundException("Book not found with id: " + id));
   }
 
+  @Transactional(readOnly = true)
+  public Integer getTotalBooks() {
+    return (int) repository.countByDeletedFalse();
+  }
+
+  @Transactional(readOnly = true)
+  public Integer getCategoryCount() {
+    Long count = repository.countDistinctCategoryIdByDeletedFalse();
+    return count == null ? 0 : Math.toIntExact(count);
+  }
+
   @Transactional
   public BookDto create(BookDto dto) {
     Book book = BookMapper.toEntity(dto);
