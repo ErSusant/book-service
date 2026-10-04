@@ -90,11 +90,33 @@ public class Book {
   @Column(name = "is_deleted")
   private boolean deleted = false;
 
-  @Column(name = "created_at", nullable = false, updatable = false)
-  private Instant createdAt = Instant.now();
+  @Column(name = "created_date", nullable = false, updatable = false)
+  private LocalDate createdAt = LocalDate.now();
 
-  @Column(name = "updated_at", nullable = false)
-  private Instant updatedAt = Instant.now();
+  @Column(name = "updated_date", nullable = false)
+  private LocalDate updatedAt = LocalDate.now();
+
+  @Column(name = "status")
+  private String status;
+
+  @Column(name="created_by")
+  private String createdBy;
+
+  public String getCreatedBy() {
+    return createdBy;
+  }
+
+  public void setCreatedBy(String createdBy) {
+    this.createdBy = createdBy;
+  }
+
+  public String getStatus() {
+    return status;
+  }
+
+  public void setStatus(String status) {
+    this.status = status;
+  }
 
   public Long getId() {
     return id;
@@ -312,19 +334,19 @@ public class Book {
     this.deleted = deleted;
   }
 
-  public Instant getCreatedAt() {
+  public LocalDate getCreatedAt() {
     return createdAt;
   }
 
-  public void setCreatedAt(Instant createdAt) {
+  public void setCreatedAt(LocalDate createdAt) {
     this.createdAt = createdAt;
   }
 
-  public Instant getUpdatedAt() {
+  public LocalDate getUpdatedAt() {
     return updatedAt;
   }
 
-  public void setUpdatedAt(Instant updatedAt) {
+  public void setUpdatedAt(LocalDate updatedAt) {
     this.updatedAt = updatedAt;
   }
 }

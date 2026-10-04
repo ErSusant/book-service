@@ -6,6 +6,7 @@ import com.ebook.management.bookservice.exception.ResourceNotFoundException;
 import com.ebook.management.bookservice.mapper.BookMapper;
 import com.ebook.management.bookservice.repository.BookRepository;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,41 @@ public class BookService {
   public List<BookDto> findAll() {
     return repository.findAll().stream()
         .filter(book -> !book.isDeleted())
+        .map(BookMapper::toDto)
+        .collect(Collectors.toList());
+  }
+
+  @Transactional(readOnly = true)
+  public List<BookDto> findFeaturedBooks() {
+    return repository.findByFeaturedTrueAndDeletedFalseOrderByCreatedAtDesc().stream()
+        .map(BookMapper::toDto)
+        .collect(Collectors.toList());
+  }
+
+  @Transactional(readOnly = true)
+  public List<BookDto> findBestSellerBooks() {
+    return repository.findByBestSellerTrueAndDeletedFalseOrderByCreatedAtDesc().stream()
+        .map(BookMapper::toDto)
+        .collect(Collectors.toList());
+  }
+
+  @Transactional(readOnly = true)
+  public List<BookDto> findTrendingBooks() {
+    return repository.findByTrendingTrueAndDeletedFalseOrderByCreatedAtDesc().stream()
+        .map(BookMapper::toDto)
+        .collect(Collectors.toList());
+  }
+
+  @Transactional(readOnly = true)
+  public List<BookDto> findNewArrivalBooks() {
+    return repository.findByNewArrivalTrueAndDeletedFalseOrderByCreatedAtDesc().stream()
+        .map(BookMapper::toDto)
+        .collect(Collectors.toList());
+  }
+
+  @Transactional(readOnly = true)
+  public List<BookDto> searchBooks(String title, String author, String isbn, Long categoryId, String status) {
+    return repository.searchBooks(title, author, isbn, categoryId, status).stream()
         .map(BookMapper::toDto)
         .collect(Collectors.toList());
   }
@@ -50,9 +86,10 @@ public class BookService {
   @Transactional
   public BookDto create(BookDto dto) {
     Book book = BookMapper.toEntity(dto);
-    book.setCreatedAt(Instant.now());
-    book.setUpdatedAt(Instant.now());
+    book.setCreatedAt(LocalDate.now());
+    book.setUpdatedAt(LocalDate.now());
     book.setDeleted(false);
+    book.setCreatedBy("system");
     return BookMapper.toDto(repository.save(book));
   }
 
@@ -86,7 +123,7 @@ public class BookService {
     existing.setBestSeller(dto.isBestSeller());
     existing.setTrending(dto.isTrending());
     existing.setNewArrival(dto.isNewArrival());
-    existing.setUpdatedAt(Instant.now());
+    existing.setUpdatedAt(LocalDate.now());
     return BookMapper.toDto(repository.save(existing));
   }
 
@@ -95,7 +132,7 @@ public class BookService {
     Book book = repository.findById(id)
         .orElseThrow(() -> new ResourceNotFoundException("Book not found with id: " + id));
     book.setDeleted(true);
-    book.setUpdatedAt(Instant.now());
+    book.setUpdatedAt(LocalDate.now());
     repository.save(book);
   }
 }
