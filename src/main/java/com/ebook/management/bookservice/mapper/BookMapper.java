@@ -36,6 +36,8 @@ public class BookMapper {
     dto.setBestSeller(book.isBestSeller());
     dto.setTrending(book.isTrending());
     dto.setNewArrival(book.isNewArrival());
+    dto.setStatus(book.getStatus());
+    dto.setCreatedBy(book.getCreatedBy());
     return dto;
   }
 
@@ -70,6 +72,8 @@ public class BookMapper {
     book.setBestSeller(dto.isBestSeller());
     book.setTrending(dto.isTrending());
     book.setNewArrival(dto.isNewArrival());
+    book.setStatus(dto.getStatus());
+    book.setCreatedBy(dto.getCreatedBy());
     return book;
   }
 }

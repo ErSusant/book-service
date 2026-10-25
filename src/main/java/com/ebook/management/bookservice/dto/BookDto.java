@@ -49,6 +49,24 @@ public class BookDto {
   private boolean bestSeller;
   private boolean trending;
   private boolean newArrival;
+  private String status;
+  private String createdBy;
+
+  public String getCreatedBy() {
+    return createdBy;
+  }
+
+  public void setCreatedBy(String createdBy) {
+    this.createdBy = createdBy;
+  }
+
+  public String getStatus() {
+    return status;
+  }
+
+  public void setStatus(String status) {
+    this.status = status;
+  }
 
   public Long getId() {
     return id;

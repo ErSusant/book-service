@@ -7,12 +7,14 @@ import jakarta.validation.Valid;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 
 @RestController
 @RequestMapping("/api/v1/books")
 @Slf4j
+@CrossOrigin("*")
 public class BookController {
 
   private final BookService bookService;
@@ -31,6 +33,31 @@ public class BookController {
       log.error("Error fetching all books", e);
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
           .body(new ApiResponse<>(false, "Failed to fetch books: " + e.getMessage(), null));
+    }
+  }
+
+  @GetMapping("/search")
+  public ResponseEntity<ApiResponse<List<BookDto>>> searchBooks(
+
+      @RequestParam(required = false) String title,
+      @RequestParam(required = false) String author,
+      @RequestParam(required = false) String isbn,
+      @RequestParam(required = false) Long categoryId,
+      @RequestParam(required = false) String status) {
+    try {
+      List<BookDto> books = bookService.searchBooks(title, author, isbn, categoryId, status);
+      log.info(
+          "Searched books with title={}, author{}, categoryId={}, status={}. Total records: {}",
+          title,
+          author,
+          categoryId,
+          status,
+          books != null ? books.size() : 0);
+      return ResponseEntity.ok(new ApiResponse<>(true, "Books filtered successfully", books));
+    } catch (Exception e) {
+      log.error("Error filtering books with  categoryId={}, status={}, title={}, author{}", categoryId, status, e);
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+          .body(new ApiResponse<>(false, "Failed to filter books: " + e.getMessage(), null));
     }
   }
 
@@ -74,8 +101,10 @@ public class BookController {
   }
 
   @PostMapping("/create")
-  public ResponseEntity<ApiResponse<BookDto>> createBook(@Valid @RequestBody BookDto dto) {
+  public ResponseEntity<ApiResponse<BookDto>> createBook(
+      @Valid @RequestBody BookDto dto) {
     try {
+
       BookDto createdBook = bookService.create(dto);
       log.info("Book created successfully with id {}", createdBook != null ? createdBook.getId() : null);
       return ResponseEntity.status(HttpStatus.CREATED)
@@ -111,6 +140,58 @@ public class BookController {
       log.error("Error deleting book with id {}", id, e);
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
           .body(new ApiResponse<>(false, "Failed to delete book: " + e.getMessage(), null));
+    }
+  }
+
+  @GetMapping("/featured")
+  public ResponseEntity<ApiResponse<List<BookDto>>> getFeaturedBooks() {
+    try {
+      List<BookDto> books = bookService.findFeaturedBooks();
+      log.info("Fetched featured books successfully. Total records: {}", books != null ? books.size() : 0);
+      return ResponseEntity.ok(new ApiResponse<>(true, "Featured books fetched successfully", books));
+    } catch (Exception e) {
+      log.error("Error fetching featured books", e);
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+          .body(new ApiResponse<>(false, "Failed to fetch featured books: " + e.getMessage(), null));
+    }
+  }
+
+  @GetMapping("/best-seller")
+  public ResponseEntity<ApiResponse<List<BookDto>>> getBestSellerBooks() {
+    try {
+      List<BookDto> books = bookService.findBestSellerBooks();
+      log.info("Fetched best seller books successfully. Total records: {}", books != null ? books.size() : 0);
+      return ResponseEntity.ok(new ApiResponse<>(true, "Best seller books fetched successfully", books));
+    } catch (Exception e) {
+      log.error("Error fetching best seller books", e);
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+          .body(new ApiResponse<>(false, "Failed to fetch best seller books: " + e.getMessage(), null));
+    }
+  }
+
+  @GetMapping("/trending")
+  public ResponseEntity<ApiResponse<List<BookDto>>> getTrendingBooks() {
+    try {
+      List<BookDto> books = bookService.findTrendingBooks();
+      log.info("Fetched trending books successfully. Total records: {}", books != null ? books.size() : 0);
+      return ResponseEntity.ok(new ApiResponse<>(true, "Trending books fetched successfully", books));
+    } catch (Exception e) {
+      log.error("Error fetching trending books", e);
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+          .body(new ApiResponse<>(false, "Failed to fetch trending books: " + e.getMessage(), null));
+    }
+  }
+
+  @GetMapping("/arrival")
+  public ResponseEntity<ApiResponse<List<BookDto>>> getArrivalBooks() {
+    try {
+      List<BookDto> books = bookService.findNewArrivalBooks();
+      log.info("Fetched new arrival books successfully. Total records: {}", books != null ? books.size() : 0);
+      return ResponseEntity.ok(new ApiResponse<>(true, "New arrival books fetched successfully", books));
+    } catch (Exception e) {
+      log.error("Error fetching new arrival books", e);
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+          .body(new ApiResponse<>(false, "Failed to fetch new arrival books: " + e.getMessage(), null));
     }
   }
 }

@@ -1,11 +1,16 @@
+com\ebook\management\bookservice\dto\ApiResponse.class
 com\ebook\management\bookservice\exception\ErrorResponse.class
+com\ebook\management\bookservice\domain\Book$BookBuilder.class
 com\ebook\management\bookservice\controller\BookController.class
 com\ebook\management\bookservice\security\JwtAuthenticationFilter.class
+com\ebook\management\bookservice\dto\BookDto$BookDtoBuilder.class
 com\ebook\management\bookservice\security\JwtTokenProvider.class
 com\ebook\management\bookservice\dto\BookDto.class
 com\ebook\management\bookservice\security\SecurityConfig.class
+com\ebook\management\bookservice\exception\ResourceNotFoundException.class
 com\ebook\management\bookservice\domain\Book.class
 com\ebook\management\bookservice\BookServiceApplication.class
 com\ebook\management\bookservice\service\BookService.class
 com\ebook\management\bookservice\mapper\BookMapper.class
 com\ebook\management\bookservice\repository\BookRepository.class
+com\ebook\management\bookservice\exception\GlobalExceptionHandler.class
